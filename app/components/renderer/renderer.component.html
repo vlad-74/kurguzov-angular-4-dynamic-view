@@ -1,0 +1,14 @@
+<div style="margin: 10px">
+  <H2 style="color: blue">Renderer2</H2>
+  <app-input 
+    user="Кургузов Владимир Геннадьевич"
+    (onEmitter)=onEmitter($event)
+  >
+  </app-input>
+  <br><br>
+  <div #elem style="display: flex">
+    <mat-checkbox class="elem" style="padding-right: 10px" [formControl]="check"></mat-checkbox>
+  </div>
+  <hr>
+  <div #childElem></div>
+</div>

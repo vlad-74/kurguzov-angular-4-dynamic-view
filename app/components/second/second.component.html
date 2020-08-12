@@ -1,0 +1,13 @@
+<div style="margin: 10px">
+  <H2 style="color: blue">ComponentFactoryResolver</H2>
+  <mat-checkbox style="padding-right: 10px" [formControl]="check"></mat-checkbox>
+
+  <button mat-raised-button 
+    [ngClass]="{'primary': !check.value, 'warn':check.value}"
+    (click)="createComponent()">
+    {{checkText}}
+  </button>
+  <hr>
+
+  <div> <ng-template #viewContainerRef></ng-template></div>
+</div>

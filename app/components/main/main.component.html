@@ -1,0 +1,60 @@
+<div class="inner-html" [innerHTML]="innerHTML"></div>
+<div style="margin: 10px" class="info">
+  <button mat-raised-button color="primary" (click)="toggleTemplateSelected()">
+    Сменить Шаблон
+  </button>
+  <a 
+    *ngIf="this.showViewTemplate && !this.start" 
+    mat-list-item href="http://coldfox.ru/article/5c82d887bbf20e61c12c7349/%D0%94%D0%B8%D1%80%D0%B5%D0%BA%D1%82%D0%B8%D0%B2%D1%8B-ng-template-ngTemplateOutlet-%D0%B8-ng-container"
+    target="_blank">
+    <button mat-raised-button color="warn">ngTemplateOutlet</button>
+  </a>
+  <a 
+    *ngIf="!this.showViewTemplate"
+    mat-list-item href="http://coldfox.ru/article/5ce1e246f7dc2f02ef7ef429/%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC-Renderer2-%D0%B2-Angular"
+    target="_blank">
+    <button mat-raised-button color="warn">Renderer2</button>
+  </a>
+  <a 
+    *ngIf="this.showViewTemplate && this.start"
+    mat-list-item
+    href="http://coldfox.ru/article/5d3dc7875ec7e63a0369cd98/create-dynamic-component-Angular"
+    target="_blank">
+    <button mat-raised-button color="warn">ComponentFactoryResolver</button>
+  </a>
+  
+  <button *ngIf="this.start"  mat-raised-button style="background: yellow;" (click)="startTemplate()">
+    на стартовый шаблон
+  </button>
+</div>
+<hr>
+<ng-container *ngTemplateOutlet='liveTemplate; context: context'></ng-container>
+
+<ng-template #tmplStart let-defUser>
+  <div style="margin: 10px">
+      <H2 style="color: blue">Привет ОДИН раз из ШАБЛОНА с КОНТЕКСТОМ</H2>
+  Hi, my name is: {{defUser.family}} {{defUser.name}} {{defUser.surname}}
+
+    <app-third #child> <H1 #h >Content для дочернего компонента</H1> </app-third>
+
+    <div class="info">
+      <button mat-raised-button color="primary" (click)="message(); child.message('# Шаблонная переменная')">
+        ViewChild - Event from ChildComponent
+      </button>
+      <a 
+        *ngIf="this.showViewTemplate && !this.start" 
+        mat-list-item href="https://metanit.com/web/angular2/2.9.php"
+        target="_blank">
+        <button mat-raised-button color="warn"># / ViewChild / ContentChild</button>
+      </a>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #tmplHidden>
+  <app-renderer></app-renderer>
+</ng-template>
+
+<ng-template #tmplCont>
+  <app-parent></app-parent>
+</ng-template>
