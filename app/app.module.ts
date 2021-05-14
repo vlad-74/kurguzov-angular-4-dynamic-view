@@ -43,7 +43,7 @@ const routes: Routes = [
   ],
   entryComponents: [
     ChildComponent
-  ],
+  ], // !!!! ОЧЕНЬ ВАЖНО
   bootstrap: [AppComponent]
 })
 export class AppModule { }

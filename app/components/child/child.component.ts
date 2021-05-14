@@ -12,5 +12,6 @@ export class ChildComponent {
 
   constructor() { }
 
+  // ИСПОЛЬЗУЕМ МЕТОДЫ РОДИТЕЛЯ
   remove_me() { this.parentRef.remove(this.unique_key) }
 }

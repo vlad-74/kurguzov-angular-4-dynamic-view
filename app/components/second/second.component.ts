@@ -4,62 +4,64 @@ import {
   ViewContainerRef,
   ViewChild,
   Component,
-  OnInit, 
+  OnInit,
   OnDestroy
-} from "@angular/core";
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ChildComponent } from "../child/child.component";
+import { ChildComponent } from '../child/child.component';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from "rxjs/operators";
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-parent',
-  templateUrl: './second.component.html',
+  templateUrl: './second.component.html'
 })
 export class SecondComponent implements OnInit, OnDestroy {
-  @ViewChild("viewContainerRef", {static: false, read: ViewContainerRef })
+  @ViewChild('viewContainerRef', { static: false, read: ViewContainerRef })
   VCR: ViewContainerRef;
 
   child_unique_key: number = 0;
-  componentsReferences = Array<ComponentRef<ChildComponent>>()
+  componentsReferences = Array<ComponentRef<ChildComponent>>();
 
   check: FormControl;
-  addComponent = "Создать дочерний компонент"
-  removeComponent = "Удалить дочерний компонент"
-  checkText = this.addComponent
+  addComponent = 'Создать дочерний компонент';
+  removeComponent = 'Удалить дочерний компонент';
+  checkText = this.addComponent;
 
   private readonly destroyed$ = new Subject();
 
-  constructor( private CFR: ComponentFactoryResolver ) {}
+  constructor(private CFR: ComponentFactoryResolver) {}
 
-  ngOnInit() { 
+  ngOnInit() {
     this.check = new FormControl('');
     this.check.valueChanges
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(query => { 
-        this.checkText = !query
-          ? this.addComponent
-          : this.removeComponent
+      .subscribe(query => {
+        this.checkText = !query ? this.addComponent : this.removeComponent;
       });
   }
 
   createComponent() {
-    if(!this.check.value){
+    if (!this.check.value) {
       let componentFactory = this.CFR.resolveComponentFactory(ChildComponent);
 
       let childComponentRef = this.VCR.createComponent(componentFactory);
 
       let childComponent = childComponentRef.instance;
-      
+
       // передаем данные в дочерний компонент
       childComponent.unique_key = ++this.child_unique_key;
-      childComponent.parentRef = this;
+      childComponent.parentRef = this; // !!!!!ВАЖНО
 
       this.componentsReferences.push(childComponentRef);
     } else {
-      if(!this.componentsReferences.length){ this.check.setValue(0) }
-      let maxElementInArr = this.componentsReferences.map(x => x.instance.unique_key);
-      this.remove(Math.max(...maxElementInArr))
+      if (!this.componentsReferences.length) {
+        this.check.setValue(0);
+      }
+      let maxElementInArr = this.componentsReferences.map(
+        x => x.instance.unique_key
+      );
+      this.remove(Math.max(...maxElementInArr));
     }
   }
 
@@ -77,14 +79,13 @@ export class SecondComponent implements OnInit, OnDestroy {
     this.componentsReferences = this.componentsReferences.filter(
       x => x.instance.unique_key !== key
     );
-    if(!this.componentsReferences.length){
-      this.check.setValue(0)
+    if (!this.componentsReferences.length) {
+      this.check.setValue(0);
     }
   }
-    
+
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
 }
-
